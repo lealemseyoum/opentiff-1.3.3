@@ -1,0 +1,28 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EkTiff", "EkTiff.vcproj", "{01C95033-5189-4B01-AC73-6EE58FD06FAD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "..\..\..\test\test.vcproj", "{4AD7CBB4-1889-4B44-9097-EED5B52AB063}"
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+		{4AD7CBB4-1889-4B44-9097-EED5B52AB063}.0 = {01C95033-5189-4B01-AC73-6EE58FD06FAD}
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{01C95033-5189-4B01-AC73-6EE58FD06FAD}.Debug.ActiveCfg = Debug|Win32
+		{01C95033-5189-4B01-AC73-6EE58FD06FAD}.Debug.Build.0 = Debug|Win32
+		{01C95033-5189-4B01-AC73-6EE58FD06FAD}.Release.ActiveCfg = Release|Win32
+		{01C95033-5189-4B01-AC73-6EE58FD06FAD}.Release.Build.0 = Release|Win32
+		{4AD7CBB4-1889-4B44-9097-EED5B52AB063}.Debug.ActiveCfg = Debug|Win32
+		{4AD7CBB4-1889-4B44-9097-EED5B52AB063}.Debug.Build.0 = Debug|Win32
+		{4AD7CBB4-1889-4B44-9097-EED5B52AB063}.Release.ActiveCfg = Release|Win32
+		{4AD7CBB4-1889-4B44-9097-EED5B52AB063}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,1965 @@
+<HTML>
+<HEAD><TITLE>TiffDirectory</TITLE></HEAD>
+
+<BODY>
+
+<CENTER><B>Copyright (c) 1999-2001 Eastman Kodak Company</B></CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+</CENTER>
+
+<H2 ALIGN=CENTER CLASS="HeadingS">
+TiffDirectory
+</H2 ALIGN=CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+<TABLE WIDTH=* BORDER=0>
+<TR><TD>
+<FONT SIZE=+1><B>Library:</B></FONT>&nbsp;&nbsp;	
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Declared in:</B></FONT>&nbsp;&nbsp;	
+
+ TiffImageFile.h 
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Inherits from:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>See:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD><FONT SIZE=+1><B>Documentation Last Modified:</B></FONT>&nbsp;&nbsp;
+Tue Mar 20 13:16:30 2001
+
+</TD></TR>
+</TABLE>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Description</H2>
+
+  The <A HREF="TiffDirectory.html" >TiffDirectory</A> class describes an IFD with a tree-like structure. It provides the
+ interface to:
+ <UL>
+    <LI> read/write tag entries, including defined and private/undefined tag.
+    <LI> traverse/create sub IFDs, including defined and private/undefined sub IFDs.
+    <LI> retrieve/create <A HREF="TiffImage.html" >TiffImage</A> object for handling image data
+    <LI> register private sub IFDs.
+ </UL>
+ The support of the private/undefined sub IFDs is provided through a registry mechanism.
+ To handle a private/undefined sub IFD, the sub IFD tag must be added to the registry.
+ Some sub IFD tags, including TIFFTAG_SUBIFD, TIFFTAG_SOUNDIFD, TIFFTAG_EXIFIFD, 
+ TIFFTAG_EXIFIFD, TIFFTAG_INTERIFD, are added to the registry automatically by the 
+ library.
+ <p>
+ Each <A HREF="TiffDirectory.html" >TiffDirectory</A> object is identified by its tag number and index. In the case of
+ a main IFD, the tag number will be TIFF_MAINIFD and the index will be the main IFD 
+ index.
+ <p>
+ Example:
+ <pre>
+  #include "<A HREF="TiffImageFile.html" >TiffImageFile</A>.h"
+  #include "<A HREF="TiffDirectory.html" >TiffDirectory</A>.h"
+ 
+  int main()
+  {
+    // To support a private sub IFD (tag number: 16899), add it to the registry
+    <A HREF="TiffDirectory.html" >TiffDirectory</A>::registerDirTag(16899);
+
+    <A HREF="TiffImageFile.html" >TiffImageFile</A> imgFile;
+    imgFile.open("test.tif", "r");
+    <A HREF="TiffDirectory.html" >TiffDirectory</A>* dir = imgFile.getDirectory(0);
+
+    // retrieve defined tag
+    <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* entry = dir->getGenericTag(TIFFTAG_IMAGEWIDTH);
+
+    // retrieve private/undefined tag 12345
+    <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* entry2 = dir->getGenericTag(12345)
+
+    // retrieve the private sub IFD
+    <A HREF="TiffDirectory.html" >TiffDirectory</A>* subdir = dir->getSubDir(16899);
+
+    // retrieve the <A HREF="TiffImage.html" >TiffImage</A> object for handling image data
+    <A HREF="TiffImage.html" >TiffImage</A>* img = dir->getImage();
+    
+    // operations on image data
+    ....
+
+    imgFile.close();
+
+  }
+ </pre>
+
+ <BR> <BR> 
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Interface</H2>
+<DL>
+ 
+<DD> <B>Public Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    typedef map&#60;ttag_t, <A HREF="TiffTagEntry.html" >TiffTagEntry</A>*&#62; 
+    	    
+    	    EntryMap 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef EntryMap::iterator 
+    	    
+    	    EntryIter 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef EntryMap::const_iterator 
+    	    
+    	    ConstEntryIter 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef vector&#60;<A HREF="TiffDirectory.html" >TiffDirectory</A>*&#62; 
+    	    
+    	    DirVec
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef map&#60;ttag_t, DirVec&#62; 
+    	    
+    	    SubDirMap 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef SubDirMap::iterator 
+    	    
+    	    SubDirIter 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef SubDirMap::const_iterator 
+    	    
+    	    ConstSubDirIter
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef vector&#60;ttag_t&#62; 
+    	    
+    	    SubDirVec 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef SubDirVec::iterator 
+    	    
+    	    SubDirVecIter 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    
+    	    <A HREF="#TiffDirectory__TiffDirectory__">~TiffDirectory</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffImage.html" >TiffImage</A>* 
+    	    <A HREF="#TiffDirectory_getImage___">getImage</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    ttag_t 
+    	    <A HREF="#TiffDirectory_getTagNum_void__const">getTagNum</A>
+    	    
+    	    ( void ) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int16 
+    	    <A HREF="#TiffDirectory_getIndex_void__const">getIndex</A>
+    	    
+    	    ( void ) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    EntryMap::size_type 
+    	    <A HREF="#TiffDirectory_numEntries_void__const">numEntries</A>
+    	    
+    	    ( void ) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffDirectory_setGenericTag_constTiffTagEntry___">setGenericTag</A>
+    	    
+    	    ( const <A HREF="TiffTagEntry.html" >TiffTagEntry</A>&#38; tagEntry ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* 
+    	    <A HREF="#TiffDirectory_getGenericTag_ttag_t__const">getGenericTag</A>
+    	    
+    	    (ttag_t tagNum ) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    <A HREF="#TiffDirectory_removeGenericTag_ttag_t__">removeGenericTag</A>
+    	    
+    	    (ttag_t tag) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffDirectory_copy_constTiffDirectory___">copy</A>
+    	    
+    	    (const <A HREF="TiffDirectory.html" >TiffDirectory</A>&#38; tifdir) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffDirectory_addSubDir_ttag_t__">addSubDir</A>
+    	    
+    	    (ttag_t tag) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffDirectory.html" >TiffDirectory</A>* 
+    	    <A HREF="#TiffDirectory_getSubDir_ttag_tuint32idx___">getSubDir</A>
+    	    
+    	    (ttag_t tag, uint32 idx = 0) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    <A HREF="#TiffDirectory_getSubDirVec_ttag_tDirVec___">getSubDirVec</A>
+    	    
+    	    (ttag_t tag, DirVec&#38; dirVec) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    const SubDirMap&#38; 
+    	    <A HREF="#TiffDirectory_getSubDirs___const">getSubDirs</A>
+    	    
+    	    () 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    const EntryMap&#38; 
+    	    <A HREF="#TiffDirectory_getTagEntries___const">getTagEntries</A>
+    	    
+    	    () 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    static void 
+    	    <A HREF="#TiffDirectory_registerDirTag_ttag_t__">registerDirTag</A>
+    	    
+    	    ( ttag_t dirTag ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    toff_t 
+    	    <A HREF="#TiffDirectory_getOffset___const">getOffset</A>
+    	    
+    	    () 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffDirectory_readFile_tdata_ttoff_ttsize_t__const">readFile</A>
+    	    
+    	    (tdata_t buf, toff_t off, tsize_t size) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffDirectory_writeFile_tdata_ttsize_ttoff_t___">writeFile</A>
+    	    
+    	    (tdata_t buf, tsize_t size, toff_t&#38; off) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffDirectory_getAudioSize___const">getAudioSize</A>
+    	    
+    	    () 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffDirectory_readAudio_tdata_ttsize_t__const">readAudio</A>
+    	    
+    	    (tdata_t buf, tsize_t bufSize) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffDirectory_writeAudio_tdata_ttsize_t__">writeAudio</A>
+    	    
+    	    (tdata_t buf, tsize_t size) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    <A HREF="#TiffDirectory_isMainIFD___const">isMainIFD</A>
+    	    
+    	    () 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    <A HREF="#TiffDirectory_isTiled___const">isTiled</A>
+    	    
+    	    () 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    <A HREF="#TiffDirectory_isUpSampled___const">isUpSampled</A>
+    	    
+    	    () 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    <A HREF="#TiffDirectory_isFillOrder_uint16__const">isFillOrder</A>
+    	    
+    	    (uint16 fillOrder) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    <A HREF="#TiffDirectory_hasTag_ttag_t__const">hasTag</A>
+    	    
+    	    (ttag_t tagNum) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffDirectory_scanlineSize___">scanlineSize</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffDirectory_tileRowSize___">tileRowSize</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffDirectory_vStripSize_uint32__">vStripSize</A>
+    	    
+    	    (uint32 nrows) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffDirectory_vTileSize_uint32__">vTileSize</A>
+    	    
+    	    (uint32 nrows) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tstrip_t 
+    	    <A HREF="#TiffDirectory_numOfStrips___">numOfStrips</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    ttile_t 
+    	    <A HREF="#TiffDirectory_numOfTiles___">numOfTiles</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    ostream&#38; 
+    	    <A HREF="#TiffDirectory_print_ostream_c_boolbPrintSubDirs___const">print</A>
+    	    
+    	    (ostream&#38; c = cout, bool bPrintSubDirs = true) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint32&#38; 
+    	    
+    	    subfileType
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    float&#38; 
+    	    
+    	    xResolution
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    float&#38; 
+    	    
+    	    yResolution
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint16&#38; 
+    	    
+    	    resolutionUnit
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint32&#38; 
+    	    
+    	    imageWidth
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint32&#38; 
+    	    
+    	    imageLength
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint32 
+    	    
+    	    imageDepth
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint32&#38; 
+    	    
+    	    tileWidth
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint32&#38; 
+    	    
+    	    tileLength
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint32 
+    	    
+    	    tileDepth
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint16&#38; 
+    	    
+    	    photoMetric
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint16 
+    	    
+    	    planarConfig
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint16 
+    	    
+    	    samplesPerPixel
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint32 
+    	    
+    	    rowsPerStrip
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint16 
+    	    
+    	    fillOrder
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    uint16 
+    	    
+    	    compression
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    vector&#60;uint16&#62;&#38; 
+    	    
+    	    yccSubSampling
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    vector&#60;float&#62;&#38; 
+    	    
+    	    refBlackWhite
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    vector&#60;uint16&#62; 
+    	    
+    	    bitsPerSample
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    vector&#60;uint32&#62;&#38; 
+    	    
+    	    stripOffsets
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    vector&#60;uint32&#62;&#38; 
+    	    
+    	    stripByteCounts
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    vector&#60;uint32&#62;&#38; 
+    	    
+    	    tileOffsets
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    vector&#60;uint32&#62;&#38; 
+    	    
+    	    tileByteCounts
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+<DD> <B>Friend:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    friend class 
+    	    
+    	    TiffImageFile
+    	    
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+<DD> <B>Protected Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    
+    	    <A HREF="#TiffDirectory_TiffDirectory_TiffIO_TiffTagEntry_toff_tint16_">TiffDirectory</A>
+    	    
+    	    ( TiffIO* _tiffio, <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* tagEntry, toff_t _offset, int16 idx ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    
+    	    <A HREF="#TiffDirectory_TiffDirectory_TiffIO_ttag_tint16_">TiffDirectory</A>
+    	    
+    	    ( TiffIO* _tiffio, ttag_t tagNum, int16 idx ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    readDir
+    	    ( toff_t offset, TiffDirEntry*&#38; dirEntries ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    readDirTree
+    	    ( void ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeDir
+    	    ( void ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeDirTree
+    	    ( void ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    deleteItems
+    	    ( void ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    convertRational
+    	    ( TiffDirEntry* dir, uint32 num, uint32 denom, float* rv) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    rationalize
+    	    ( const double&#38; fpNum, uint32&#38; numer, uint32&#38; denom, const double error=1.0e-10 ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* 
+    	    
+    	    fetchNormalTag
+    	    ( TiffDirEntry* dp ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    fetchData
+    	    ( toff_t offset, int8* dataPtr, uint32 byteSize ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int8* 
+    	    
+    	    fetchByteArray
+    	    ( TiffDirEntry* dir ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int16* 
+    	    
+    	    fetchShortArray
+    	    ( TiffDirEntry* dir ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int32* 
+    	    
+    	    fetchLongArray
+    	    ( TiffDirEntry* dir ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    float* 
+    	    
+    	    fetchRationalArray
+    	    ( TiffDirEntry* dir ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    float* 
+    	    
+    	    fetchFloatArray
+    	    ( TiffDirEntry* dir ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    double* 
+    	    
+    	    fetchDoubleArray
+    	    ( TiffDirEntry* dir ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeNormalTag
+    	    ( <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* tagEntry ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeByteArray
+    	    (TiffDirEntry&#38; dirEntry, int8* dp) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeShortArray
+    	    (TiffDirEntry&#38; dirEntry, int16* dp) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeLongArray
+    	    (TiffDirEntry&#38; dirEntry, int32* dp) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeRationalArray
+    	    (TiffDirEntry&#38; dirEntry, int32* dp) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeFloatArray
+    	    (TiffDirEntry&#38; dirEntry, float* dp) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeDoubleArray
+    	    (TiffDirEntry&#38; dirEntry, double* dp) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    addSubDir
+    	    ( <A HREF="TiffDirectory.html" >TiffDirectory</A>* subDir ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffDirectory_addSubDir_TiffTagEntry___">addSubDir</A>
+    	    
+    	    ( <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* tagEntry ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    
+    	    canBeUSHORTULONG
+    	    (uint16 tagNum) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    
+    	    selfGenerated
+    	    (ttag_t tag) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* 
+    	    
+    	    getDefaultTag
+    	    (ttag_t tagNum ) 
+	    const
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+<DD> <B>Private Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    <A HREF="TiffImage.html" >TiffImage</A>* 
+    	    
+    	    tiffimg
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    TiffIO* 
+    	    
+    	    tiffio 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    static EntryMap 
+    	    
+    	    defaultEntries 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    static toff_t 
+    	    
+    	    entryOffset 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    static toff_t 
+    	    
+    	    dataOffset 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    toff_t 
+    	    <A HREF="#TiffDirectory_offset_">offset </A>
+    	    
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    toff_t 
+    	    <A HREF="#TiffDirectory_nextDirOffset_">nextDirOffset </A>
+    	    
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    ttag_t 
+    	    
+    	    tag 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    int16 
+    	    
+    	    index 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    EntryMap 
+    	    
+    	    tagEntries 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    SubDirMap 
+    	    
+    	    subDirs 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    static SubDirVec 
+    	    <A HREF="#TiffDirectory_subDirTags_">subDirTags </A>
+    	    
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    static void 
+    	    
+    	    setupDefaults
+    	    ( void ) 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+</DL>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<DL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="TiffDirectory__TiffDirectory__">
+<DT><HR WIDTH=100%><BR><B>~TiffDirectory</B>()  
+<BR>
+<DD>
+
+
+ 
+ Destructor
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getImage___">
+<DT><HR WIDTH=100%><BR><A HREF="TiffImage.html" >TiffImage</A>* <B>getImage</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Pointer to the image object if it exists or can be created; otherwise NULL.
+</I><br><br> 
+ Get the <A HREF="TiffImage.html" >TiffImage</A> object of this IFD, which is used to read/write image data.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getTagNum_void__const">
+<DT><HR WIDTH=100%><BR>ttag_t <B>getTagNum</B>( void ) const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Tag number of the IFD.
+</I><br><br> 
+ Get the tag number of this IFD.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getIndex_void__const">
+<DT><HR WIDTH=100%><BR>int16 <B>getIndex</B>( void ) const 
+<BR>
+<DD>
+
+
+ 
+ Get the index of this IFD.
+ return: Index of the IFD.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_numEntries_void__const">
+<DT><HR WIDTH=100%><BR>EntryMap::size_type <B>numEntries</B>( void ) const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Number of entries.
+</I><br><br> 
+ Return the number of entries in this IFD.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_setGenericTag_constTiffTagEntry___">
+<DT><HR WIDTH=100%><BR>void <B>setGenericTag</B>( const <A HREF="TiffTagEntry.html" >TiffTagEntry</A>&#38; tagEntry )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tagEntry</I></FONT></TD><TD><I>Tag entry to set.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Set the tag entry to this IFD. If the tag entry is a sub IFD tag, a <A HREF="TiffDirectory.html" >TiffDirectory</A>
+ object for the sub IFD will be created internally and can be retrieved with the 
+ getSubDir(...) method. This method will overide any existing tag that matches 
+ the tag entry to set.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getGenericTag_ttag_t__const">
+<DT><HR WIDTH=100%><BR><A HREF="TiffTagEntry.html" >TiffTagEntry</A>* <B>getGenericTag</B>(ttag_t tagNum ) const 
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tagNum</I></FONT></TD><TD><I>Tag number</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Pointer to the tag entry if the tag exists; otherwise NULL.
+</I><br><br> 
+ Get the tag entry with the given tag number. If the given tag number is a sub IFD
+ tag, the returned tag entry contains the offset information of the sub IFD.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_removeGenericTag_ttag_t__">
+<DT><HR WIDTH=100%><BR>bool <B>removeGenericTag</B>(ttag_t tag)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tag</I></FONT></TD><TD><I>Tag number.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> True if the tag exists and is removed successfully; otherwise false.
+</I><br><br> 
+ Remove the given tag from the IFD. If the tag is a sub IFD tag, all the content of 
+ the sub IFD will be removed as well.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_copy_constTiffDirectory___">
+<DT><HR WIDTH=100%><BR>void <B>copy</B>(const <A HREF="TiffDirectory.html" >TiffDirectory</A>&#38; tifdir)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tifdir</I></FONT></TD><TD><I>Source to copy from.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Perform a "deep" copy from the given IFD to this IFD. The whole IFD tree will be
+ duplicated.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_addSubDir_ttag_t__">
+<DT><HR WIDTH=100%><BR>void <B>addSubDir</B>(ttag_t tag)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tag</I></FONT></TD><TD><I>Sub IFD tag</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Add a sub IFD. The index of the sub IFD is the next available index.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getSubDir_ttag_tuint32idx___">
+<DT><HR WIDTH=100%><BR><A HREF="TiffDirectory.html" >TiffDirectory</A>* <B>getSubDir</B>(ttag_t tag, uint32 idx = 0)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tag</I></TD><TD><I>Tag number.</I></FONT></TD></TR>
+<TR><TD><I>idx</I></FONT></TD><TD><I>Index.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Pointer to the sub IFD object if the sub IFD exists; otherwise NULL.
+</I><br><br> 
+ Get the sub IFD with the tag and index.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getSubDirVec_ttag_tDirVec___">
+<DT><HR WIDTH=100%><BR>bool <B>getSubDirVec</B>(ttag_t tag, DirVec&#38; dirVec)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tag</I></TD><TD><I>Tag number</I></FONT></TD></TR>
+<TR><TD><I>dirVec</I></FONT></TD><TD><I>Reference to the vector of the sub IFDs returned.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> True if the sub IFDs exist; otherwise false.
+</I><br><br> 
+ Get a list of sub IFDs with the same tag number.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getSubDirs___const">
+<DT><HR WIDTH=100%><BR>const SubDirMap&#38; <B>getSubDirs</B>() const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Reference to the sub IFD map.
+</I><br><br> 
+ Internally the sub IFDs are stored in a STL map. This method returns the 
+ reference to the map.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getTagEntries___const">
+<DT><HR WIDTH=100%><BR>const EntryMap&#38; <B>getTagEntries</B>() const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Reference to the tag entry map.
+</I><br><br> 
+ Internally the tag entries are stored in a STL map. This method returns the 
+ reference to the map.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_registerDirTag_ttag_t__">
+<DT><HR WIDTH=100%><BR>static void <B>registerDirTag</B>( ttag_t dirTag )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>dirTag</I></FONT></TD><TD><I>IFD tag number.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Register a sub IFD tag. The sub IFD are handled with a registry mechanism. 
+ In order to support a sub IFD, its tag number needs to be added to the registry.
+ Some sub IFD tags, including TIFFTAG_SUBIFD, TIFFTAG_SOUNDIFD, TIFFTAG_EXIFIFD, 
+ TIFFTAG_EXIFIFD, TIFFTAG_INTERIFD, are added to the registry automatically by the 
+ library.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getOffset___const">
+<DT><HR WIDTH=100%><BR>toff_t <B>getOffset</B>() const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Offset
+</I><br><br> 
+ Return the offset value of this IFD object.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_readFile_tdata_ttoff_ttsize_t__const">
+<DT><HR WIDTH=100%><BR>tsize_t <B>readFile</B>(tdata_t buf, toff_t off, tsize_t size) const 
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>buf</I></TD><TD><I>Buffer for data returned.</I></FONT></TD></TR>
+<TR><TD><I>off</I></TD><TD><I>Offset of the data to read.</I></FONT></TD></TR>
+<TR><TD><I>size</I></FONT></TD><TD><I>Amount of data to read in byte.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Amount read in byte if successful; otherwise zero.
+</I><br><br> 
+ Read the specified amount of data that start from the given offset.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_writeFile_tdata_ttsize_ttoff_t___">
+<DT><HR WIDTH=100%><BR>tsize_t <B>writeFile</B>(tdata_t buf, tsize_t size, toff_t&#38; off)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>buf</I></TD><TD><I>User-supplied data</I></FONT></TD></TR>
+<TR><TD><I>size</I></TD><TD><I>Amount of data to write in byte.</I></FONT></TD></TR>
+<TR><TD><I>off</I></FONT></TD><TD><I>When the function returns, this parameter is set to the offset of the data wrote in the file.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Amount of data wrote if successful; otherwise zero.
+</I><br><br> 
+ Write the specified amount of data to the file.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_getAudioSize___const">
+<DT><HR WIDTH=100%><BR>tsize_t <B>getAudioSize</B>() const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Length of audio stream in byte if the audio stream exists; otherwise zero.
+</I><br><br> 
+ Get the length of audio stream in byte. This is a helper function for Sound IFD. If
+ the IFD object is not a sound IFD an error will be thrown.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_readAudio_tdata_ttsize_t__const">
+<DT><HR WIDTH=100%><BR>tsize_t <B>readAudio</B>(tdata_t buf, tsize_t bufSize) const 
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>buf</I></TD><TD><I>Buffer for audio data.</I></FONT></TD></TR>
+<TR><TD><I>bufSize</I></FONT></TD><TD><I>Buffer size.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Amount of data read in byte if the audio exists; otherwise zero.
+</I><br><br> 
+ Read the audio stream to the supplied buffer. This is a helper function for Sound IFD. If
+ the IFD object is not a sound IFD an error will be thrown.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_writeAudio_tdata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>writeAudio</B>(tdata_t buf, tsize_t size)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>buf</I></TD><TD><I>User-supplied data</I></FONT></TD></TR>
+<TR><TD><I>size</I></FONT></TD><TD><I>Amount of data in byte</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Amount of data wrote in byte if successful; otherwise zero.
+</I><br><br> 
+ Write the specified amount of data to audio stream. This is a helper function for Sound IFD. If
+ the IFD object is not a sound IFD an error will be thrown. Note that this
+ should be called before writing the sound IFD.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_isMainIFD___const">
+<DT><HR WIDTH=100%><BR>bool <B>isMainIFD</B>() const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> True if it is a main IFD; otherwise false.
+</I><br><br> 
+ Check if the IFD object is a main IFD
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_isTiled___const">
+<DT><HR WIDTH=100%><BR>bool <B>isTiled</B>() const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> True if it is a tiled image; otherwise false.
+</I><br><br> 
+ Check if the image in this IFD is a tiled image.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_isUpSampled___const">
+<DT><HR WIDTH=100%><BR>bool <B>isUpSampled</B>() const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> True if doing up-sampling; otherwise false
+</I><br><br> 
+ Check if the library is doning data up-sampling.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_isFillOrder_uint16__const">
+<DT><HR WIDTH=100%><BR>bool <B>isFillOrder</B>(uint16 fillOrder) const 
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>fillOrder</I></FONT></TD><TD><I>Value to check.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> True if the fill order flag is set; otherwise false.
+</I><br><br> 
+ Check if the fill order flag is set in the given parameter.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_hasTag_ttag_t__const">
+<DT><HR WIDTH=100%><BR>bool <B>hasTag</B>(ttag_t tagNum) const 
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tagNum</I></FONT></TD><TD><I>Tag number.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> True if the tag exists; otherwise false.
+</I><br><br> 
+ Check if containing the tag entry.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_scanlineSize___">
+<DT><HR WIDTH=100%><BR>tsize_t <B>scanlineSize</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> The size of scanline in byte.
+</I><br><br> 
+ Compute the size of scanline in byte.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_tileRowSize___">
+<DT><HR WIDTH=100%><BR>tsize_t <B>tileRowSize</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Size in byte
+</I><br><br> 
+ Compute the size of a row for a tile in byte
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_vStripSize_uint32__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>vStripSize</B>(uint32 nrows)  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Size in bytes
+</I><br><br> 
+ Compute the number of bytes in a variable height, row-aligned strip.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_vTileSize_uint32__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>vTileSize</B>(uint32 nrows)  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> size in byte
+</I><br><br> 
+ Compute the number of bytes in a variable length, row-aligned tile. 
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_numOfStrips___">
+<DT><HR WIDTH=100%><BR>tstrip_t <B>numOfStrips</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> The number of strips.
+</I><br><br> 
+ Compute how many strips in an image.
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_numOfTiles___">
+<DT><HR WIDTH=100%><BR>ttile_t <B>numOfTiles</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> The number of tiles
+</I><br><br> 
+ Compute the number of tiles in the image
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_print_ostream_c_boolbPrintSubDirs___const">
+<DT><HR WIDTH=100%><BR>ostream&#38; <B>print</B>(ostream&#38; c = cout, bool bPrintSubDirs = true) const 
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>c</I></TD><TD><I>Output stream for printing.</I></FONT></TD></TR>
+<TR><TD><I>bPrintSubDirs</I></FONT></TD><TD><I>Whether to print sub IFD inforamtion recursively.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Output stream for printing.
+</I><br><br> 
+ Print the IFD information. This method is for debugging purpose.
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="TiffDirectory_TiffDirectory_TiffIO_TiffTagEntry_toff_tint16_">
+<DT><HR WIDTH=100%><BR><B>TiffDirectory</B>( TiffIO* _tiffio, <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* tagEntry, toff_t _offset, int16 idx )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>_tiffio</I></TD><TD><I>Pointer to the TiffIO object.</I></FONT></TD></TR>
+<TR><TD><I>tagEntry</I></TD><TD><I>Pointer to the tag entry information of the IFD.</I></FONT></TD></TR>
+<TR><TD><I>_offset</I></TD><TD><I>Offset to the IFD.</I></FONT></TD></TR>
+<TR><TD><I>idx</I></FONT></TD><TD><I>Index of the IFD</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Constructor that is used in the library internally. 
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_TiffDirectory_TiffIO_ttag_tint16_">
+<DT><HR WIDTH=100%><BR><B>TiffDirectory</B>( TiffIO* _tiffio, ttag_t tagNum, int16 idx )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>_tiffio</I></TD><TD><I>Pointer to the TiffIO object.</I></FONT></TD></TR>
+<TR><TD><I>tagNum</I></TD><TD><I>Tag number of the IFD.</I></FONT></TD></TR>
+<TR><TD><I>idx</I></FONT></TD><TD><I>Index of the IFD</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Constructor that is used in the library internally. 
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="TiffDirectory_addSubDir_TiffTagEntry___">
+<DT><HR WIDTH=100%><BR>void <B>addSubDir</B>( <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* tagEntry )  
+<BR>
+<DD>
+
+
+ 
+ This function will replace the existing sub IFDs
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="TiffDirectory_offset_">
+<DT><HR WIDTH=100%><BR>toff_t <B>offset </B>
+<BR>
+<DD>
+
+
+ 
+ was tif_diroff
+<br><br>
+
+
+
+
+<A NAME="TiffDirectory_nextDirOffset_">
+<DT><HR WIDTH=100%><BR>toff_t <B>nextDirOffset </B>
+<BR>
+<DD>
+
+
+ 
+ was tif_nextdiroff
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="TiffDirectory_subDirTags_">
+<DT><HR WIDTH=100%><BR>static SubDirVec <B>subDirTags </B>
+<BR>
+<DD>
+
+
+ 
+ known sub-directory tags
+<br><br>
+
+
+
+
+
+
+
+</DL>
+
+</body>
+</html>
+

@@ -1,0 +1,761 @@
+<HTML>
+<HEAD><TITLE>TiffImageFile</TITLE></HEAD>
+
+<BODY>
+
+<CENTER><B>Copyright (c) 1999-2001 Eastman Kodak Company</B></CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+</CENTER>
+
+<H2 ALIGN=CENTER CLASS="HeadingS">
+TiffImageFile
+</H2 ALIGN=CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+<TABLE WIDTH=* BORDER=0>
+<TR><TD>
+<FONT SIZE=+1><B>Library:</B></FONT>&nbsp;&nbsp;	
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Declared in:</B></FONT>&nbsp;&nbsp;	
+
+ TiffImageFile.h 
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Inherits from:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>See:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD><FONT SIZE=+1><B>Documentation Last Modified:</B></FONT>&nbsp;&nbsp;
+Tue Mar 20 13:16:30 2001
+
+</TD></TR>
+</TABLE>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Description</H2>
+
+  This class is used to open a TIFF image file and get/create an IFD. 
+ <p>
+ The TIFF image file can be opened with various open modes, as follows:
+ <pre>
+ "r"    open for reading.
+ "w"    open for writing.
+ "l"	  use little-endian byte order for creating a file.
+ "b"    use big-endian byte order for creating a file
+ "L"    read/write information using LSB2MSB bit order
+ "B"    read/write information using MSB2LSB bit order
+ "H"    read/write information using host bit order
+ "M"    enable use of memory-mapped files when supported
+ "m"    disable use of memory-mapped files
+ "C"    enable strip chopping support when reading
+ "c"    disable strip chopping support
+ </pre>
+ Currently open for both reading and writing is not supported.
+ <p>
+ The IFDs of a TIFF image file have a tree-like structure where the root node represents
+ the main IFD and sub nodes represent the sub IFDs. To travase a node in the tree you need 
+ to describe a path from the root to this node, which is expressed with the type DirPath
+ DirPath is specifiec as a vector of a pair of values. For each pair, the first value
+ is the IFD's TIFF tag, the second value is the index of the IFD in the case where
+ multiple instances of the same IFD tag exist at the same level. The index of the
+ vector implies the containing relationship of the IFDs, i.e., DirPath[0] contains
+ DirPath[1]; DirPath[1] contains DirPath[2], etc...
+ <p>
+ Example:
+ <pre>
+  #include "<A HREF="TiffImageFile.html" >TiffImageFile</A>.h"
+
+  int main()
+  {
+    <A HREF="TiffImageFile.html" >TiffImageFile</A> imgFile;
+    DirPath dirPath;
+    
+    // open a TIFF file    
+    imgFile.open("test.tif", "r");
+    
+    // specify a dir path: MainIFD, index 0 -> SubIFD 330, index 0
+    dirPath.push_back(<A HREF="TiffImageFile.html" >TiffImageFile</A>::DirPath::value_type(TIFF_MAINIFD, 0));
+    dirPath.push_back(<A HREF="TiffImageFile.html" >TiffImageFile</A>::DirPath::value_type(330, 0));
+    
+    // get the IFD specified by dirPath
+    <A HREF="TiffDirectory.html" >TiffDirectory</A>* dir = imgFile.getDirectory(dirPath);
+    
+    // get tag entry for tag TIFFTAG_COMPRESSION under IFD dirPath
+    <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* entry = imgFile.getGenericTag(TIFFTAG_COMPRESSION, dirPath);
+
+    imgFile.close();
+  }
+ </pre>
+ <BR> <BR> 
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Interface</H2>
+<DL>
+ 
+<DD> <B>Public Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    typedef pair&#60;ttag_t, uint16&#62; 
+    	    
+    	    DirPair
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef vector&#60;DirPair&#62; 
+    	    
+    	    DirPath 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef DirPath::iterator 
+    	    
+    	    DirPathIter 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef DirPath::value_type 
+    	    
+    	    DirPathValType 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef vector&#60;<A HREF="TiffDirectory.html" >TiffDirectory</A>*&#62; 
+    	    
+    	    DirVec
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    
+    	    <A HREF="#TiffImageFile_TiffImageFile__">TiffImageFile</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    virtual 
+    	    
+    	    ~TiffImageFile
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImageFile_open_constchar_constchar___">open</A>
+    	    
+    	    (const char* name, const char* cmode) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImageFile_open_ekthandle_tconstchar_constchar___">open</A>
+    	    
+    	    (ekthandle_t fileHandle, const char* name, const char* cmode) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImageFile_open_constchar_constchar_toff_t___">open</A>
+    	    
+    	    ( const char* name, const char* cmode, toff_t&#38; mapSize ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImageFile_open_ekthandle_tconstchar_constchar_toff_t___">open</A>
+    	    
+    	    ( ekthandle_t fileHandle, const char* name, const char* cmode, toff_t&#38; mapSize ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImageFile_open_void_tsize_tconstchar___">open</A>
+    	    
+    	    (void* imgBuf, tsize_t bufSize, const char* cmode) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImageFile_open_HINTERNETconstchar___">open</A>
+    	    
+    	    (HINTERNET hInet, const char* name) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImageFile_close_tsize_t_imgSize___">close</A>
+    	    
+    	    (tsize_t* imgSize = NULL) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffDirectory.html" >TiffDirectory</A>* 
+    	    <A HREF="#TiffImageFile_getDirectory_uint16__">getDirectory</A>
+    	    
+    	    ( uint16 index) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffDirectory.html" >TiffDirectory</A>* 
+    	    <A HREF="#TiffImageFile_getDirectory_DirPath___">getDirectory</A>
+    	    
+    	    ( DirPath&#38; dirPath ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffDirectory.html" >TiffDirectory</A>* 
+    	    <A HREF="#TiffImageFile_createDirectory___">createDirectory</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImageFile_createDirectory_DirPath__">createDirectory</A>
+    	    
+    	    (DirPath dirPath) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    <A HREF="#TiffImageFile_numMainDirs___">numMainDirs</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* 
+    	    <A HREF="#TiffImageFile_getGenericTag_ttag_tDirPath___">getGenericTag</A>
+    	    
+    	    ( ttag_t tag, DirPath&#38; dirPath ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImageFile_setGenericTag_constTiffTagEntry_DirPath___">setGenericTag</A>
+    	    
+    	    ( const <A HREF="TiffTagEntry.html" >TiffTagEntry</A>&#38; entry, DirPath&#38; dirPath ) 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+
+
+
+
+<DD> <B>Private Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    TiffHeader 
+    	    
+    	    header 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    TiffIO* 
+    	    
+    	    tiffio 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    DirVec 
+    	    
+    	    mainDirs
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    string 
+    	    
+    	    fileName 
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    initAfterOpen
+    	    ( const char* cmode, toff_t&#38; mapSize ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    verifyVersion
+    	    ( void ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    readHeader
+    	    ( void ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeHeader
+    	    ( void ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    initHeader
+    	    ( bool bigendian ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    initEndian
+    	    ( bool bigendian ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    
+    	    checkEndian
+    	    ( void ) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    readDirectories
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    
+    	    writeDirectories
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+</DL>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<DL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="TiffImageFile_TiffImageFile__">
+<DT><HR WIDTH=100%><BR><B>TiffImageFile</B>()  
+<BR>
+<DD>
+
+
+ 
+ Default Constructor.
+<br><br>
+
+
+
+
+
+
+<A NAME="TiffImageFile_open_constchar_constchar___">
+<DT><HR WIDTH=100%><BR>void <B>open</B>(const char* name, const char* cmode)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>name</I></TD><TD><I>Name of the image file.</I></FONT></TD></TR>
+<TR><TD><I>cmode</I></FONT></TD><TD><I>Open mode.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Open an image file.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_open_ekthandle_tconstchar_constchar___">
+<DT><HR WIDTH=100%><BR>void <B>open</B>(ekthandle_t fileHandle, const char* name, const char* cmode)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>fileHandle</I></TD><TD><I>File handle.</I></FONT></TD></TR>
+<TR><TD><I>name</I></TD><TD><I>Name of the image file. It's not actually used to open the file,  just for the information purpose.</I></FONT></TD></TR>
+<TR><TD><I>cmode</I></FONT></TD><TD><I>Open mode.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Open an image file with the given file handle.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_open_constchar_constchar_toff_t___">
+<DT><HR WIDTH=100%><BR>void <B>open</B>( const char* name, const char* cmode, toff_t&#38; mapSize )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>name</I></TD><TD><I>Name of the image file.</I></FONT></TD></TR>
+<TR><TD><I>cmode</I></TD><TD><I>Open mode.</I></FONT></TD></TR>
+<TR><TD><I>mapSize</I></FONT></TD><TD><I>Specify the memory size used for mapping if the file is opened with the memory map mode. If this parameter is given a value of 0, the library will determine the memory size for mapping. The returned value of this parameter is the real memory size allocated for mapping.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Open an image file.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_open_ekthandle_tconstchar_constchar_toff_t___">
+<DT><HR WIDTH=100%><BR>void <B>open</B>( ekthandle_t fileHandle, const char* name, const char* cmode, toff_t&#38; mapSize )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>fileHandle</I></TD><TD><I>File handle.</I></FONT></TD></TR>
+<TR><TD><I>name</I></TD><TD><I>Name of the image file. It's not actually used to open the file,  just for the information purpose.</I></FONT></TD></TR>
+<TR><TD><I>cmode</I></TD><TD><I>Open mode.</I></FONT></TD></TR>
+<TR><TD><I>mapSize</I></FONT></TD><TD><I>Specify the memory size used for mapping if the file is opened with the memory map mode. If this parameter is given a value of 0, the library will determine the memory size for mapping. The returned value of this parameter is the real memory size allocated for mapping.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Open an image file.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_open_void_tsize_tconstchar___">
+<DT><HR WIDTH=100%><BR>void <B>open</B>(void* imgBuf, tsize_t bufSize, const char* cmode)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>imgBuf</I></TD><TD><I>Image buffer.</I></FONT></TD></TR>
+<TR><TD><I>bufSize</I></TD><TD><I>Size of image buffer.</I></FONT></TD></TR>
+<TR><TD><I>cmode</I></FONT></TD><TD><I>Open mode.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Open an in-memory image file.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_open_HINTERNETconstchar___">
+<DT><HR WIDTH=100%><BR>void <B>open</B>(HINTERNET hInet, const char* name)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>hInternet</I></TD><TD><I>Internet file handle.</I></FONT></TD></TR>
+<TR><TD><I>name</I></FONT></TD><TD><I>File name, just for information purpose.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Open an image file with the supplied internet file handle.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_close_tsize_t_imgSize___">
+<DT><HR WIDTH=100%><BR>void <B>close</B>(tsize_t* imgSize = NULL)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>imgSize</I></FONT></TD><TD><I>Return the size of the image file.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Close the image file.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_getDirectory_uint16__">
+<DT><HR WIDTH=100%><BR><A HREF="TiffDirectory.html" >TiffDirectory</A>* <B>getDirectory</B>( uint16 index)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>index</I></FONT></TD><TD><I>The index of main IFD.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> A pointer to the <A HREF="TiffDirectory.html" >TiffDirectory</A> object if the IFD found; otherwise NULL.
+</I><br><br> 
+ Get an existing main IFD with the correct index.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_getDirectory_DirPath___">
+<DT><HR WIDTH=100%><BR><A HREF="TiffDirectory.html" >TiffDirectory</A>* <B>getDirectory</B>( DirPath&#38; dirPath )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>dirPath</I></FONT></TD><TD><I>Directory path of the IFD to retrieve. </I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> A pointer to the <A HREF="TiffDirectory.html" >TiffDirectory</A> object if the IFD found; otherwise NULL.
+</I><br><br> 
+ Get an existing main or sub IFD.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_createDirectory___">
+<DT><HR WIDTH=100%><BR><A HREF="TiffDirectory.html" >TiffDirectory</A>* <B>createDirectory</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> A pointer to the <A HREF="TiffDirectory.html" >TiffDirectory</A> object created.
+</I><br><br> 
+ Create a main IFD. The index of main IFD starts from 0 and increments by 1 with
+ each call to this function.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_createDirectory_DirPath__">
+<DT><HR WIDTH=100%><BR>void <B>createDirectory</B>(DirPath dirPath)  
+<BR>
+<DD>
+
+
+ 
+ Create main/sub IFDs specified in the DirPath. If the IFDs already exists 
+ then nothing happens. Note that each of the IFD indexes in the DirPath should
+ be less or equal to the next available index for the corresponding IFD tag;
+ otherwise, a error will be thrown.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_numMainDirs___">
+<DT><HR WIDTH=100%><BR>int <B>numMainDirs</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Number of main directories.
+</I><br><br> 
+ Return the number of main directories.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_getGenericTag_ttag_tDirPath___">
+<DT><HR WIDTH=100%><BR><A HREF="TiffTagEntry.html" >TiffTagEntry</A>* <B>getGenericTag</B>( ttag_t tag, DirPath&#38; dirPath )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tag</I></TD><TD><I>the tag to retrieve.</I></FONT></TD></TR>
+<TR><TD><I>dirPath</I></FONT></TD><TD><I>the IFD to search.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> A pointer to the tag entry if found; otherwise NULL.
+</I><br><br> 
+ Search a tag in an IFD and return the tag entry found.
+<br><br>
+
+
+
+
+<A NAME="TiffImageFile_setGenericTag_constTiffTagEntry_DirPath___">
+<DT><HR WIDTH=100%><BR>void <B>setGenericTag</B>( const <A HREF="TiffTagEntry.html" >TiffTagEntry</A>&#38; entry, DirPath&#38; dirPath )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>entry</I></TD><TD><I>The tag entry to set.</I></FONT></TD></TR>
+<TR><TD><I>dirPath</I></FONT></TD><TD><I>The IFD where the tag entry is set to.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Set a tag entry in an IFD.
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</DL>
+
+</body>
+</html>
+

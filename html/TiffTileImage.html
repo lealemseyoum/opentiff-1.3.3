@@ -1,0 +1,562 @@
+<HTML>
+<HEAD><TITLE>TiffTileImage</TITLE></HEAD>
+
+<BODY>
+
+<CENTER><B>Copyright (c) 1999-2001 Eastman Kodak Company</B></CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+</CENTER>
+
+<H2 ALIGN=CENTER CLASS="HeadingS">
+TiffTileImage
+</H2 ALIGN=CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+<TABLE WIDTH=* BORDER=0>
+<TR><TD>
+<FONT SIZE=+1><B>Library:</B></FONT>&nbsp;&nbsp;	
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Declared in:</B></FONT>&nbsp;&nbsp;	
+
+ TiffImageFile.h 
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Inherits from:</B></FONT>&nbsp;&nbsp;
+ public <A HREF="TiffImage.html" >TiffImage</A>  
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>See:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD><FONT SIZE=+1><B>Documentation Last Modified:</B></FONT>&nbsp;&nbsp;
+Tue Mar 20 13:15:51 2001
+
+</TD></TR>
+</TABLE>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Description</H2>
+
+  This class subclasses <A HREF="TiffImage.html" >TiffImage</A> to provide interface to handle tile-based image. 
+ <p>
+ Example:
+ <pre>
+  #include "<A HREF="TiffImageFile.html" >TiffImageFile</A>.h"
+  #include "<A HREF="TiffDirectory.html" >TiffDirectory</A>.h"
+  #include "<A HREF="TiffTileImage.html" >TiffTileImage</A>.h"
+ 
+  int main()
+  {
+    <A HREF="TiffImageFile.html" >TiffImageFile</A> inImgFile;
+    inImgFile.open("test.tif", "r");
+    <A HREF="TiffImageFile.html" >TiffImageFile</A> outImgFile;
+    outImgFile.open("out.tif", "w");
+    <A HREF="TiffDirectory.html" >TiffDirectory</A>* indir = inImgFile.getDirectory(0);
+    <A HREF="TiffDirectory.html" >TiffDirectory</A>* outdir = outImgFile.getDirectory(0);
+    
+    outdir->copy(*indir)
+
+    <A HREF="TiffImage.html" >TiffImage</A>* inImg = indir->getImage();
+    <A HREF="TiffImage.html" >TiffImage</A>* outImg = outdir->getImage(); 
+    if (inImg && outImg && inImg->isTiled())
+    {
+      int size = inImg->tileSize();
+      tdata_t buf = new unsigned char[size];
+      tstrip_t numTiles = inImg->numOfTiles();
+      for (int i=0; i < numTiles; i++)
+      {
+        size = inImg->readRawTile(i, buf, -1);
+        outImg->writeRawTile(i, buf, size);
+      }
+
+      outImg->flush();
+    }
+
+    inImgFile.close();
+    outImgFile.close();
+  }
+ </pre>
+
+ <BR> <BR> 
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Interface</H2>
+<DL>
+ 
+<DD> <B>Public Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    
+    	    <A HREF="#TiffTileImage_TiffTileImage_TiffDirectory_TiffIO__">TiffTileImage</A>
+    	    
+    	    (<A HREF="TiffDirectory.html" >TiffDirectory</A>* tdir, TiffIO* tio) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    
+    	    
+    	    ~TiffTileImage
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffTileImage_readRawTile_ttile_ttdata_ttsize_t__">readRawTile</A>
+    	    
+    	    (ttile_t tile, tdata_t buf, tsize_t size) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffTileImage_writeRawTile_ttile_ttdata_ttsize_t__">writeRawTile</A>
+    	    
+    	    (ttile_t tile, tdata_t data, tsize_t cc) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffTileImage_readEncodedTile_ttile_ttdata_ttsize_t__">readEncodedTile</A>
+    	    
+    	    (ttile_t tile, tdata_t buf, tsize_t size) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffTileImage_writeEncodedTile_ttile_ttdata_ttsize_t__">writeEncodedTile</A>
+    	    
+    	    (ttile_t tile, tdata_t data, tsize_t cc) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    ttile_t 
+    	    <A HREF="#TiffTileImage_computeTile_uint32uint32uint32tsample_t__const">computeTile</A>
+    	    
+    	    (uint32 x, uint32 y, uint32 z, tsample_t s) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    ttile_t 
+    	    <A HREF="#TiffTileImage_numOfTiles___">numOfTiles</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffTileImage_tileRowSize___">tileRowSize</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffTileImage_vTileSize_uint32__">vTileSize</A>
+    	    
+    	    (uint32 nrows) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffTileImage_tileSize___">tileSize</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    ttile_t 
+    	    <A HREF="#TiffTileImage_currentTile___">currentTile</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+
+
+<DD> <B>Protected Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    virtual void 
+    	    
+    	    initSize
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    virtual tsize_t 
+    	    
+    	    getSize
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    startTile
+    	    (ttile_t tile) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    
+    	    readRawTile1
+    	    (ttile_t tile, tdata_t buf, tsize_t size) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    fillTile
+    	    (ttile_t tile) 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+<DD> <B>Private Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    tsize_t	
+    	    
+    	    tilesize
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    uint32 
+    	    <A HREF="#TiffTileImage_tif_col">tif_col</A>
+    	    
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    ttile_t	
+    	    <A HREF="#TiffTileImage_curtile">curtile</A>
+    	    
+    	    
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+</DL>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<DL>
+
+
+
+<A NAME="TiffTileImage_TiffTileImage_TiffDirectory_TiffIO__">
+<DT><HR WIDTH=100%><BR><B>TiffTileImage</B>(<A HREF="TiffDirectory.html" >TiffDirectory</A>* tdir, TiffIO* tio)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tdir</I></TD><TD><I>Pointer to the IFD object containing this image.</I></FONT></TD></TR>
+<TR><TD><I>tio</I></FONT></TD><TD><I>Pointer to the TiffIO object.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Create a <A HREF="TiffTileImage.html" >TiffTileImage</A> object. This constructor is used by the libray internally
+ and not intended to be called by the users.
+<br><br>
+
+
+
+
+
+
+<A NAME="TiffTileImage_readRawTile_ttile_ttdata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>readRawTile</B>(ttile_t tile, tdata_t buf, tsize_t size)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tile</I></TD><TD><I>The tile number.</I></FONT></TD></TR>
+<TR><TD><I>buf</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>size</I></FONT></TD><TD><I>The count of data in byte.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> The number of bytes read.
+</I><br><br> 
+ Read a tile to the user-supplied buffer.
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_writeRawTile_ttile_ttdata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>writeRawTile</B>(ttile_t tile, tdata_t data, tsize_t cc)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tile</I></TD><TD><I>The tile number.</I></FONT></TD></TR>
+<TR><TD><I>data</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>cc</I></FONT></TD><TD><I>The count of data in byte.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> The number of bytes wrote.
+</I><br><br> 
+ Write the supplied data to the specified tile.
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_readEncodedTile_ttile_ttdata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>readEncodedTile</B>(ttile_t tile, tdata_t buf, tsize_t size)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tile</I></TD><TD><I>The tile number.</I></FONT></TD></TR>
+<TR><TD><I>buf</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>size</I></FONT></TD><TD><I>The count of data in byte.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> The number of bytes read.
+</I><br><br> 
+ Read a tile of data and decompress the specified amount into the user-supplied
+ buffer
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_writeEncodedTile_ttile_ttdata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>writeEncodedTile</B>(ttile_t tile, tdata_t data, tsize_t cc)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tile</I></TD><TD><I>The tile number.</I></FONT></TD></TR>
+<TR><TD><I>data</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>cc</I></FONT></TD><TD><I>The count of data in byte.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> The number of bytes wrote.
+</I><br><br> 
+ Encode the supplied data and write it to the specified tile.
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_computeTile_uint32uint32uint32tsample_t__const">
+<DT><HR WIDTH=100%><BR>ttile_t <B>computeTile</B>(uint32 x, uint32 y, uint32 z, tsample_t s) const 
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>x</I></TD><TD><I>X coordinate.</I></FONT></TD></TR>
+<TR><TD><I>y</I></TD><TD><I>Y coordinate.</I></FONT></TD></TR>
+<TR><TD><I>z</I></TD><TD><I>Z coordinate.</I></FONT></TD></TR>
+<TR><TD><I>s</I></FONT></TD><TD><I>Sample number.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Tile number.
+</I><br><br> 
+ Compute which tile a (x, y, z, s) value is in.
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_numOfTiles___">
+<DT><HR WIDTH=100%><BR>ttile_t <B>numOfTiles</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> The number of tiles
+</I><br><br> 
+ Compute the number of tiles in the image
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_tileRowSize___">
+<DT><HR WIDTH=100%><BR>tsize_t <B>tileRowSize</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Size in byte
+</I><br><br> 
+ Compute the size of a row for a tile in byte
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_vTileSize_uint32__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>vTileSize</B>(uint32 nrows)  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> size in byte
+</I><br><br> 
+ Compute the number of bytes in a variable length, row-aligned tile. 
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_tileSize___">
+<DT><HR WIDTH=100%><BR>tsize_t <B>tileSize</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> size in byte
+</I><br><br> 
+ Compute the number of bytes in a row-aligned tile.
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_currentTile___">
+<DT><HR WIDTH=100%><BR>ttile_t <B>currentTile</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Tile number
+</I><br><br> 
+ Retrieve the current tile number.
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="TiffTileImage_tif_col">
+<DT><HR WIDTH=100%><BR>uint32 <B>tif_col</B>
+<BR>
+<DD>
+
+
+ 
+ was tif_col, current column (offset by row too) 
+<br><br>
+
+
+
+
+<A NAME="TiffTileImage_curtile">
+<DT><HR WIDTH=100%><BR>ttile_t	<B>curtile</B>
+<BR>
+<DD>
+
+
+ 
+ current tile for read/write 
+<br><br>
+
+
+
+
+
+</DL>
+
+</body>
+</html>
+

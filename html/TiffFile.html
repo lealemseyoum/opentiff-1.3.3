@@ -1,0 +1,454 @@
+<HTML>
+<HEAD><TITLE>TiffFile</TITLE></HEAD>
+
+<BODY>
+
+<CENTER><B>Copyright (c) 1999-2001 Eastman Kodak Company</B></CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+</CENTER>
+
+<H2 ALIGN=CENTER CLASS="HeadingS">
+TiffFile
+</H2 ALIGN=CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+<TABLE WIDTH=* BORDER=0>
+<TR><TD>
+<FONT SIZE=+1><B>Library:</B></FONT>&nbsp;&nbsp;	
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Declared in:</B></FONT>&nbsp;&nbsp;	
+
+ TiffImageFile.h 
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Inherits from:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>See:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD><FONT SIZE=+1><B>Documentation Last Modified:</B></FONT>&nbsp;&nbsp;
+Tue Mar 20 13:16:30 2001
+
+</TD></TR>
+</TABLE>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Description</H2>
+
+  This is a wrapper class for <A HREF="TiffImageFile.html" >TiffImageFile</A>. It provides a simple means of accessing
+ metadata in a TIFF knowledge layer. In this layer. the library establishes the 
+ mapping from the common IFD name to the specific IFD tag for the supported TIFF 
+ formats. The users specify the TIFF foramt to handle and use the common IFD name 
+ to access the metadata. The interface of this class is easy to use and greatly 
+ relieve the average users from knowing the TIFF IFD structure. 
+ <p>
+ Example:
+ <pre>
+   #include "<A HREF="TiffFile.html" >TiffFile</A>.h"
+   #include "<A HREF="TiffTagEntry.html" >TiffTagEntry</A>.h"
+
+   int main()
+   {
+     <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* entry;
+     <A HREF="TiffFile.html" >TiffFile</A> tFile;
+     tFile.open("DC290.tif", "r", FMT_ULTRATIFF);
+
+     // Get image width of full res image
+     entry = tFile.getTag(TIFFTAG_IMAGEWIDTH, CIN_PRIMARYIMAGE);
+     // Get image width of thumbnail
+     entry = tFile.getTag(TIFFTAG_IMAGEWIDTH, CIN_THUMBNAIL);
+     ...
+     tFile.close();
+   }
+ </pre>
+
+ <BR> <BR> 
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Interface</H2>
+<DL>
+ 
+<DD> <B>Public Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    typedef map&#60;CommonIFDName, <A HREF="TiffImageFile.html" >TiffImageFile</A>::DirPath&#62; 
+    	    
+    	    DirMap
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef DirMap::iterator 
+    	    
+    	    DirMapIter
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef DirMap::const_iterator 
+    	    
+    	    ConstDirMapIter
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef map&#60;TiffFormat, DirMap*&#62; 
+    	    
+    	    FormatMap
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef FormatMap::iterator 
+    	    
+    	    FormatMapIter
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    typedef FormatMap::const_iterator 
+    	    
+    	    ConstFormatMapIter
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    
+    	    <A HREF="#TiffFile_TiffFile__">TiffFile</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    
+    	    <A HREF="#TiffFile__TiffFile__">~TiffFile</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffFile_open_constchar_constchar_TiffFormat__">open</A>
+    	    
+    	    (const char* name, const char* cmode, TiffFormat fmt) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffFile_open_ekthandle_tconstchar_constchar_TiffFormat__">open</A>
+    	    
+    	    (ekthandle_t hFile, const char* name, const char* cmode, TiffFormat fmt) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* 
+    	    <A HREF="#TiffFile_getTag_ttag_tCommonIFDName__">getTag</A>
+    	    
+    	    (ttag_t tag, CommonIFDName cname) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffFile_setTag_constTiffTagEntry_CommonIFDName__">setTag</A>
+    	    
+    	    (const <A HREF="TiffTagEntry.html" >TiffTagEntry</A>&#38; entry, CommonIFDName cname) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffDirectory.html" >TiffDirectory</A>* 
+    	    <A HREF="#TiffFile_getDirectory_CommonIFDName__">getDirectory</A>
+    	    
+    	    (CommonIFDName cname) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffImageFile.html" >TiffImageFile</A>*	
+    	    <A HREF="#TiffFile_getImageFile___">getImageFile</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffFile_close___">close</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+
+
+<DD> <B>Protected Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    void 
+    	    
+    	    initRegistry
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    DirMap*	
+    	    
+    	    format
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    static FormatMap	
+    	    
+    	    registry
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    <A HREF="TiffImageFile.html" >TiffImageFile</A>	*
+    	    
+    	    imgFile
+    	    
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+</DL>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<DL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<A NAME="TiffFile_TiffFile__">
+<DT><HR WIDTH=100%><BR><B>TiffFile</B>()  
+<BR>
+<DD>
+
+
+ 
+ Constructor.
+<br><br>
+
+
+
+
+<A NAME="TiffFile__TiffFile__">
+<DT><HR WIDTH=100%><BR><B>~TiffFile</B>()  
+<BR>
+<DD>
+
+
+ 
+ Destructor.
+<br><br>
+
+
+
+
+<A NAME="TiffFile_open_constchar_constchar_TiffFormat__">
+<DT><HR WIDTH=100%><BR>void <B>open</B>(const char* name, const char* cmode, TiffFormat fmt)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>name</I></TD><TD><I>File name</I></FONT></TD></TR>
+<TR><TD><I>cmode</I></TD><TD><I>Open mode</I></FONT></TD></TR>
+<TR><TD><I>fmt</I></FONT></TD><TD><I>Tiff format</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Open an image.
+<br><br>
+
+
+
+
+<A NAME="TiffFile_open_ekthandle_tconstchar_constchar_TiffFormat__">
+<DT><HR WIDTH=100%><BR>void <B>open</B>(ekthandle_t hFile, const char* name, const char* cmode, TiffFormat fmt)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>hFile</I></TD><TD><I>Handle of image file.</I></FONT></TD></TR>
+<TR><TD><I>name</I></TD><TD><I>File name</I></FONT></TD></TR>
+<TR><TD><I>cmode</I></TD><TD><I>Open mode</I></FONT></TD></TR>
+<TR><TD><I>fmt</I></FONT></TD><TD><I>Tiff format</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Open an image with the specified handle.
+<br><br>
+
+
+
+
+<A NAME="TiffFile_getTag_ttag_tCommonIFDName__">
+<DT><HR WIDTH=100%><BR><A HREF="TiffTagEntry.html" >TiffTagEntry</A>* <B>getTag</B>(ttag_t tag, CommonIFDName cname)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tag</I></TD><TD><I>Tag number.</I></FONT></TD></TR>
+<TR><TD><I>cname</I></FONT></TD><TD><I>Common IFD name.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Pointer to the tag entry if the tag is found; otherwise NULL.
+</I><br><br> 
+ Retrieve tag entry.
+<br><br>
+
+
+
+
+<A NAME="TiffFile_setTag_constTiffTagEntry_CommonIFDName__">
+<DT><HR WIDTH=100%><BR>void <B>setTag</B>(const <A HREF="TiffTagEntry.html" >TiffTagEntry</A>&#38; entry, CommonIFDName cname)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>entry</I></TD><TD><I>Tag entry.</I></FONT></TD></TR>
+<TR><TD><I>cname</I></FONT></TD><TD><I>Common IFD name.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Set tag entry.
+<br><br>
+
+
+
+
+<A NAME="TiffFile_getDirectory_CommonIFDName__">
+<DT><HR WIDTH=100%><BR><A HREF="TiffDirectory.html" >TiffDirectory</A>* <B>getDirectory</B>(CommonIFDName cname)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>cname</I></FONT></TD><TD><I>Common IFD name.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Pointer to the IFD if the IFD is found; otherwise NULL.
+</I><br><br> 
+ Get the directory with the specified name
+<br><br>
+
+
+
+
+<A NAME="TiffFile_getImageFile___">
+<DT><HR WIDTH=100%><BR><A HREF="TiffImageFile.html" >TiffImageFile</A>*	<B>getImageFile</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Pointer to the image file object.
+</I><br><br> 
+ Get the image file object wrapped.
+<br><br>
+
+
+
+
+<A NAME="TiffFile_close___">
+<DT><HR WIDTH=100%><BR>void <B>close</B>()  
+<BR>
+<DD>
+
+
+ 
+ Close the file.
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</DL>
+
+</body>
+</html>
+

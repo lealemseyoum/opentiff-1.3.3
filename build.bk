@@ -1,0 +1,100 @@
+#!/bin/sh
+
+usage()
+{
+    echo "build: Help script to run configure and make opentiff"
+    echo "Usage: build \"options\""
+    echo "       where options can be any of the following:"
+    echo "       -d (specify that you want to build the debug version)"
+    echo "       -n <excluding library options> can be \"static\" or \"shared\"; indicating which library not to build. The default will build both static and shared libraries."
+    echo "       -h (to get help on the above comments)"
+}
+
+ERROR_EXIT_CODE=1
+
+
+if test ${1}o = "-h"; then
+    usage
+    exit $ERROR_EXIT_CODE
+fi
+
+# get the command line parameters
+if test -x /usr/bin/getopt; then
+    set -- `/usr/bin/getopt dn:h $*`echo " getopt"
+else
+    set -- `getopts dn:h `$*``
+fi
+
+if [$? != 0]; then
+    usage
+    exit $ERROR_EXIT_CODE
+fi
+
+# setup the default values for each parameters
+debug=off
+excluding=""
+
+for i in $*
+    do
+    case $i in
+    -d)
+	debug=on; shift;;
+    -n)
+	excluding=$2; shift 2;;
+    -h)
+	usage
+	exit $ERROR_EXIT_CODE;;
+    --)
+	shift; break;;
+    esac
+done
+
+if test $debug = "off"; then
+    CXXFLAGS=-O2
+    export CXXFLAGS
+    echo ""
+    echo "******** Building OpenTiff release ********"
+    echo ""
+else
+    echo ""
+    echo "******** Building OpenTiff debug ********"
+    echo ""
+fi
+
+disable_feature=""
+if test $excluding; then
+case $excluding in
+    static)
+	disable_feature="--disable-static";
+	echo "--- Disable building static library--";;
+    shared)
+	disable_feature="--disable-shared";
+	echo "--- Disable building shared library--";;
+    *)
+	echo "I do not recognize the excluding library options. Please type '$0 -h' for help."
+	exit $ERROR_EXIT_CODE;;	
+esac
+fi
+
+chmod u+x ./configure ./config-scripts/*
+# touch them since the timestamp will screw up when ftpping
+touch ./configure ./aclocal.m4
+
+curdir=`pwd`
+runconf="./configure --libdir=$curdir/lib $disable_feature"
+
+echo ""
+echo $runconf
+echo ""
+$runconf
+
+# do clean make
+make clean
+
+runmake="make"
+echo ""
+echo $runmake
+echo ""
+$runmake
+
+unset CXXFLAGS

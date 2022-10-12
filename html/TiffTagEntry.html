@@ -1,0 +1,344 @@
+<HTML>
+<HEAD><TITLE>TiffTagEntry</TITLE></HEAD>
+
+<BODY>
+
+<CENTER><B>Copyright (c) 1999-2001 Eastman Kodak Company</B></CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+</CENTER>
+
+<H2 ALIGN=CENTER CLASS="HeadingS">
+TiffTagEntry
+</H2 ALIGN=CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+<TABLE WIDTH=* BORDER=0>
+<TR><TD>
+<FONT SIZE=+1><B>Library:</B></FONT>&nbsp;&nbsp;	
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Declared in:</B></FONT>&nbsp;&nbsp;	
+
+ TiffImageFile.h 
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Inherits from:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>See:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD><FONT SIZE=+1><B>Documentation Last Modified:</B></FONT>&nbsp;&nbsp;
+Tue Mar 20 13:16:30 2001
+
+</TD></TR>
+</TABLE>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Description</H2>
+
+  This abstract class is the base class for representing the tag entry of a TIFF image.
+ It contains three pieces of inforamtion: tag that identified the field, field type
+ and the count of number of values.
+
+ <BR> <BR> 
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Interface</H2>
+<DL>
+ 
+<DD> <B>Public Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    virtual 
+    	    <A HREF="#TiffTagEntry__TiffTagEntry___">~TiffTagEntry</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    virtual <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* 
+    	    <A HREF="#TiffTagEntry_clone_void__const">clone</A>
+    	    
+    	    ( void ) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    ttag_t 
+    	    <A HREF="#TiffTagEntry_getTagNum_void__const">getTagNum</A>
+    	    
+    	    ( void ) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    ttype_t 
+    	    <A HREF="#TiffTagEntry_getType_void__const">getType</A>
+    	    
+    	    ( void ) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int32&#38; 
+    	    <A HREF="#TiffTagEntry_getCount_void__">getCount</A>
+    	    
+    	    ( void ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int32 
+    	    <A HREF="#TiffTagEntry_getCount_void__const">getCount</A>
+    	    
+    	    ( void ) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffTagEntry_setCount_int32__">setCount</A>
+    	    
+    	    ( int32 cnt ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    virtual ostream&#38; 
+    	    <A HREF="#TiffTagEntry_print_ostream_c___const">print</A>
+    	    
+    	    (ostream&#38; c = cout) 
+	    const
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+
+
+<DD> <B>Protected Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    
+    	    
+    	    TiffTagEntry
+    	    (ttag_t num, ttype_t typ ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    
+    	    
+    	    TiffTagEntry
+    	    (ttag_t num, ttype_t typ, int32 cnt ) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    ttag_t 
+    	    
+    	    tagNum
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    ttype_t	
+    	    
+    	    type
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    int32 
+    	    
+    	    count 
+    	    
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+</DL>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<DL>
+
+
+
+<A NAME="TiffTagEntry__TiffTagEntry___">
+<DT><HR WIDTH=100%><BR>virtual <B>~TiffTagEntry</B>()  
+<BR>
+<DD>
+
+
+ 
+ Destructor
+<br><br>
+
+
+
+
+<A NAME="TiffTagEntry_clone_void__const">
+<DT><HR WIDTH=100%><BR>virtual <A HREF="TiffTagEntry.html" >TiffTagEntry</A>* <B>clone</B>( void ) const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Pointer to the copy.
+</I><br><br> 
+ Create a copy of the <A HREF="TiffTagEntry.html" >TiffTagEntry</A> object.
+<br><br>
+
+
+
+
+<A NAME="TiffTagEntry_getTagNum_void__const">
+<DT><HR WIDTH=100%><BR>ttag_t <B>getTagNum</B>( void ) const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Tag number
+</I><br><br> 
+ Get the tag number.
+<br><br>
+
+
+
+
+<A NAME="TiffTagEntry_getType_void__const">
+<DT><HR WIDTH=100%><BR>ttype_t <B>getType</B>( void ) const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Field type.
+</I><br><br> 
+ Get the field type.
+<br><br>
+
+
+
+
+<A NAME="TiffTagEntry_getCount_void__">
+<DT><HR WIDTH=100%><BR>int32&#38; <B>getCount</B>( void )  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Reference to the number of values.
+</I><br><br> 
+ Get the number of values.
+<br><br>
+
+
+
+
+<A NAME="TiffTagEntry_getCount_void__const">
+<DT><HR WIDTH=100%><BR>int32 <B>getCount</B>( void ) const 
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Number of values.
+</I><br><br> 
+ Get the number of values.
+<br><br>
+
+
+
+
+<A NAME="TiffTagEntry_setCount_int32__">
+<DT><HR WIDTH=100%><BR>void <B>setCount</B>( int32 cnt )  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>cnt</I></FONT></TD><TD><I>Number of values</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Set the number of values.
+<br><br>
+
+
+
+
+<A NAME="TiffTagEntry_print_ostream_c___const">
+<DT><HR WIDTH=100%><BR>virtual ostream&#38; <B>print</B>(ostream&#38; c = cout) const 
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>c</I></FONT></TD><TD><I>Output stream.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> Output stream.
+</I><br><br> 
+ Print the tag entry. For debugging.
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</DL>
+
+</body>
+</html>
+

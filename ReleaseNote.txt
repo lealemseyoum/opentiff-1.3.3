@@ -1,0 +1,197 @@
+                        OpenTiff Release Note (version 1.3.3)
+                                09/09/2009
+
+I. Recent changes or bugs fixed in this release
+- Fixed build issues for recent compilers (VC9, GCC 4.x)
+
+II. New features
+
+III. Known bugs and limitations
+
+==============================================================================
+
+                        OpenTiff Release Note (version 1.3.2)
+                                09/17/2007
+
+I. Recent changes or bugs fixed in this release
+- Fixed 64-bit errors.
+
+II. New features
+
+III. Known bugs and limitations
+- There still are issues with read/write mode.
+
+==============================================================================
+
+                        OpenTiff Release Note (version 1.3.1)
+                                01/28/2004
+
+I. Recent changes or bugs fixed in this release
+- Fixed GCC 4.1 compile errors
+- Fixed debug and release Unix/Linux builds
+
+II. New features
+
+III. Known bugs and limitations
+- There still are issues with read/write mode.
+
+==============================================================================
+
+                        OpenTiff Release Note (version 1.3)
+                                01/28/2004
+
+I. Recent changes or bugs fixed in this release
+
+II. New features
+- Implemented functionality in TiffImageFile for removing metadata tag
+  entries.
+
+III. Known bugs and limitations
+- There still are issues with read/write mode.
+
+==============================================================================
+
+                        OpenTiff Release Note (version 1.2.1)
+                                12/15/2003
+
+I. Recent changes or bugs fixed in this release
+- Fix for building on Mac OS-X. We built using gcc 3.3
+
+II. New features
+
+III. Known bugs and limitations
+- There still are issues with read/write mod
+
+==============================================================================
+
+
+                        OpenTiff Release Note (version 1.2)
+                                11/19/2003
+
+I. Recent changes or bugs fixed in this release
+- Many type changes for 64-bit compliance. Below is a new table with the
+mappings of Tiff Types and Count to the type you need to cast TiffTagEntryT to.
+
+Type ( TiffTagEntry::getType() ) -> Count ( TiffTagEntry::getCount() ) -> TiffTagEntryT<?>
+
+TIFF_ASCII -> any -> TiffTagEntryT<string>
+TIFF_BYTE -> 1 -> TiffTagEntryT<int8>
+TIFF_BYTE -> grtr than 1 -> TiffTagEntryT<vector<int8> >
+TIFF_UNDEFINED -> 1 -> TiffTagEntryT<int8>
+TIFF_UNDEFINED -> grtr than 1 -> TiffTagEntryT<vector<int8> >
+TIFF_UBYTE -> 1 -> TiffTagEntryT<uint8>
+TIFF_UBYTE -> grtr than 1 -> TiffTagEntryT<vector<uint8> >
+TIFF_SHORT -> 1 -> TiffTagEntryT<int16>
+TIFF_SHORT -> grtr than 1 -> TiffTagEntryT<vector<int16> >
+TIFF_USHORT -> 1 -> TiffTagEntryT<uint16>
+TIFF_USHORT -> grtr than 1 -> TiffTagEntryT<vector<uint16> >
+TIFF_LONG -> 1 -> TiffTagEntryT<tiff_int32>
+TIFF_LONG -> grtr than 1 -> TiffTagEntryT<vector<tiff_int32> >
+TIFF_ULONG -> 1 -> TiffTagEntryT<tiff_uint32>
+TIFF_ULONG -> grtr than 1 -> TiffTagEntryT<vector<tiff_uint32> >
+TIFF_RATIONAL -> 1 -> TiffTagEntryT<float>
+TIFF_RATIONAL -> grtr than 1 -> TiffTagEntryT<vector<float> >
+TIFF_URATIONAL -> 1 -> TiffTagEntryT<float>
+TIFF_URATIONAL -> grtr than 1 -> TiffTagEntryT<vector<float> >
+TIFF_FLOAT -> 1 -> TiffTagEntryT<float>
+TIFF_FLOAT -> grtr than 1 -> TiffTagEntryT<vector<float> >
+TIFF_DOUBLE -> 1 -> TiffTagEntryT<double>
+TIFF_DOUBLE -> grtr than 1 -> TiffTagEntryT<vector<double> >
+
+II. New features
+- Now 64-bit compliant.
+
+III. Known bugs and limitations
+- There still are issues with read/write mod
+
+==============================================================================
+
+			OpenTiff Release Notes (version 1.0.5)
+				5/14/2003
+I Recent changes or Bugs Fixed in this release
+- Better handling of bad images
+
+II. New Features
+- Added support for VC 7.1
+
+III. Known Bugs/Limitations
+- There are some issues when opening images in read/write mode
+
+==============================================================================
+
+                        OpenTiff Release Note (version 1.0.4)
+                                02/13/2003
+
+I. Recent changes or Bugs Fixed in this release
+- Changed license to the IBM Common Public License Version 0.5
+
+II. New Features
+- Added support for VC 7 (Visual Studio .Net)
+- Added support for gcc 3.2
+
+III. Known Bugs/Limitations
+- There are some issues when opening images in read/write mode
+
+
+===============================================================================
+
+			Open Tiff Release Note (version 1.0.3)
+				11/07/2002
+I. Bugs Fixed in this release
+	1.) Fixed bug related to handling of string types (EKTIFF_ASCII) in 
+	TiffDirectory::fetchNormalTag(). The count of ASCII types includes the null
+	character at the end, therefore the size of the string will be one less than the
+	count of the entry.
+
+II. New Features
+
+III. Known Bugs
+
+==================================================================
+
+			Open Tiff Release Note (version 1.0.2)
+				11/04/2002
+I. Bugs Fixed in this release
+	1.)  Added the GPSIFD tag (34853) to the subDirTags that are registered automatically.
+	2.)  Made changes so that the TIFFTAG_STRIPOFFSETS, TIFFTAG_STRIPBYTECOUNTS
+	TIFFTAG_TILEOFFSETS and TIFFTAG_TILEBYTECOUNTS are treated
+	the same way as all of the rest of the keys. That is, they should only have
+	a vector value when there count is greater than 1.
+	Previously, they had a vector value regardless of their count.
+	3.)  Added a try/catch block in TiffDirectory::getImage() to check whether TiffImage::init() fails and be able to clean up.
+	4.)  Made some minor modifications to the test code and TestOut.txt.
+
+II. New Features
+
+III. Known Bugs
+
+==================================================================
+
+			Open Tiff Release Note (version 1.0.1)
+				6/8/2001
+I. Bugs Fixed in this release
+	1. Memory leaks.
+	2. No swap handling for 16 bits image data
+
+II. New Features
+
+III. Known Bugs
+
+==================================================================
+
+			Open Tiff Release Note (version 1.0)
+				3/20/2001
+
+This document contains information that supplements the 
+Open Tiff API document and accompanying software.
+
+I. Recent changes or Bugs Fixed in this release
+    1. Changes that enable the Linux support.
+    2. Changes that enable the Mac support.
+
+
+II. New Features
+
+
+III. Known Bugs
+	

@@ -1,0 +1,31 @@
+LS_None.tif rM 0
+0/0
+TestOut.tif wM 0
+-1/-1
+
+BS_None.tif r 0
+0/0
+TestOut.tif w 0
+-1/-1
+
+BT_None.tif r 0
+0/0
+TestOut.tif wb 0
+-1/-1
+
+LS_Jpeg.tif r 0
+0/0
+TestOut.tif w 0
+-1/-1
+
+LT_Jpeg.tif r 0
+0/0
+TestOut.tif w 0
+-1/-1
+
+SingleStrip.tif r 0
+0/0
+TestOut.tif w 0
+-1/-1
+
+

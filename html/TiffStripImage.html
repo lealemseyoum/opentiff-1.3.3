@@ -1,0 +1,601 @@
+<HTML>
+<HEAD><TITLE>TiffStripImage</TITLE></HEAD>
+
+<BODY>
+
+<CENTER><B>Copyright (c) 1999-2001 Eastman Kodak Company</B></CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+</CENTER>
+
+<H2 ALIGN=CENTER CLASS="HeadingS">
+TiffStripImage
+</H2 ALIGN=CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+<TABLE WIDTH=* BORDER=0>
+<TR><TD>
+<FONT SIZE=+1><B>Library:</B></FONT>&nbsp;&nbsp;	
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Declared in:</B></FONT>&nbsp;&nbsp;	
+
+ TiffImageFile.h 
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Inherits from:</B></FONT>&nbsp;&nbsp;
+ public <A HREF="TiffImage.html" >TiffImage</A>  
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>See:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD><FONT SIZE=+1><B>Documentation Last Modified:</B></FONT>&nbsp;&nbsp;
+Tue Mar 20 13:16:30 2001
+
+</TD></TR>
+</TABLE>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Description</H2>
+
+  This class subclasses <A HREF="TiffImage.html" >TiffImage</A> to provide interface to handle strip-based image. 
+ <p>
+ Example:
+ <pre>
+  #include "<A HREF="TiffImageFile.html" >TiffImageFile</A>.h"
+  #include "<A HREF="TiffDirectory.html" >TiffDirectory</A>.h"
+  #include "<A HREF="TiffStripImage.html" >TiffStripImage</A>.h"
+ 
+  int main()
+  {
+    <A HREF="TiffImageFile.html" >TiffImageFile</A> inImgFile;
+    inImgFile.open("test.tif", "r");
+    <A HREF="TiffImageFile.html" >TiffImageFile</A> outImgFile;
+    outImgFile.open("out.tif", "w");
+    <A HREF="TiffDirectory.html" >TiffDirectory</A>* indir = inImgFile.getDirectory(0);
+    <A HREF="TiffDirectory.html" >TiffDirectory</A>* outdir = outImgFile.getDirectory(0);
+    
+    outdir->copy(*indir)
+
+    <A HREF="TiffImage.html" >TiffImage</A>* inImg = indir->getImage();
+    <A HREF="TiffImage.html" >TiffImage</A>* outImg = outdir->getImage(); 
+    if (inImg && outImg && !inImg->isTiled())
+    {
+      int size = inImg->scanlineSize();
+      tdata_t buf = new unsigned char[size];
+      uint32 length = indir->imageLength();
+
+      for (int row=0; row < length; row++)
+      {
+        inImg->readScanline(buf, row);
+        outImg->writeScanline(buf, row);
+      }
+      outImg->flush();
+
+      delete (unsigned char*)buf;
+    }
+
+    inImgFile.close();
+    outImgFile.close();
+  }
+ </pre>
+
+ <BR> <BR> 
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Interface</H2>
+<DL>
+ 
+<DD> <B>Public Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    
+    	    <A HREF="#TiffStripImage_TiffStripImage_TiffDirectory_TiffIO__">TiffStripImage</A>
+    	    
+    	    (<A HREF="TiffDirectory.html" >TiffDirectory</A>* tdir, TiffIO* tio) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    
+    	    
+    	    ~TiffStripImage
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    <A HREF="#TiffStripImage_writeScanline_tdata_tuint32tsample_tsample___">writeScanline</A>
+    	    
+    	    (tdata_t buf, uint32 row, tsample_t sample = 0) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    <A HREF="#TiffStripImage_readScanline_tdata_tuint32tsample_tsample___">readScanline</A>
+    	    
+    	    (tdata_t buf, uint32 row, tsample_t sample = 0) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffStripImage_writeEncodedStrip_tstrip_ttdata_ttsize_t__">writeEncodedStrip</A>
+    	    
+    	    (tstrip_t strip, tdata_t data, tsize_t cc) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffStripImage_readEncodedStrip_tstrip_ttdata_ttsize_t__">readEncodedStrip</A>
+    	    
+    	    (tstrip_t strip, tdata_t buf, tsize_t size) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffStripImage_writeRawStrip_tstrip_ttdata_ttsize_t__">writeRawStrip</A>
+    	    
+    	    (tstrip_t strip, tdata_t data, tsize_t cc) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffStripImage_readRawStrip_tstrip_ttdata_ttsize_t__">readRawStrip</A>
+    	    
+    	    (tstrip_t strip, tdata_t buf, tsize_t size) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tstrip_t 
+    	    <A HREF="#TiffStripImage_computeStrip_uint32tsample_t__const">computeStrip</A>
+    	    
+    	    (uint32 row, tsample_t sample) 
+	    const
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tstrip_t 
+    	    <A HREF="#TiffStripImage_numOfStrips___">numOfStrips</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffStripImage_scanlineSize___">scanlineSize</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tstrip_t 
+    	    <A HREF="#TiffStripImage_currentStrip___">currentStrip</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffStripImage_vStripSize_uint32__">vStripSize</A>
+    	    
+    	    (uint32 nrows) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    <A HREF="#TiffStripImage_stripSize___">stripSize</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+
+
+<DD> <B>Protected Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    virtual void 
+    	    
+    	    initSize
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    virtual tsize_t 
+    	    
+    	    getSize
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    seek
+    	    (uint32 row, tsample_t sample) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    tsize_t 
+    	    
+    	    readRawStrip1
+    	    (tstrip_t strip, tdata_t buf, tsize_t size) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    fillStrip
+    	    (tstrip_t strip) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    startStrip
+    	    (tstrip_t strip) 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+<DD> <B>Private Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    tsize_t	
+    	    
+    	    scanlinesize
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    tstrip_t	
+    	    
+    	    curstrip
+    	    
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+</DL>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<DL>
+
+
+
+<A NAME="TiffStripImage_TiffStripImage_TiffDirectory_TiffIO__">
+<DT><HR WIDTH=100%><BR><B>TiffStripImage</B>(<A HREF="TiffDirectory.html" >TiffDirectory</A>* tdir, TiffIO* tio)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>tdir</I></TD><TD><I>Pointer to the IFD object containing this image.</I></FONT></TD></TR>
+<TR><TD><I>tio</I></FONT></TD><TD><I>Pointer to the TiffIO object.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Create a <A HREF="TiffStripImage.html" >TiffStripImage</A> object. This constructor is used by the libray internally
+ and not intended to be called by the users.
+<br><br>
+
+
+
+
+
+
+<A NAME="TiffStripImage_writeScanline_tdata_tuint32tsample_tsample___">
+<DT><HR WIDTH=100%><BR>int <B>writeScanline</B>(tdata_t buf, uint32 row, tsample_t sample = 0)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>buf</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>row</I></TD><TD><I>The row number of the scanline.</I></FONT></TD></TR>
+<TR><TD><I>sample</I></FONT></TD><TD><I>Indicate which band of data.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> 1 if succeed; otherwise zero.
+</I><br><br> 
+ Write the supplied data to the specified scanline.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_readScanline_tdata_tuint32tsample_tsample___">
+<DT><HR WIDTH=100%><BR>int <B>readScanline</B>(tdata_t buf, uint32 row, tsample_t sample = 0)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>buf</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>row</I></TD><TD><I>The row number of the scanline.</I></FONT></TD></TR>
+<TR><TD><I>sample</I></FONT></TD><TD><I>Indicate which band of data.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> 1 if succeed; otherwise zero.
+</I><br><br> 
+ Read data from the specified scanline.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_writeEncodedStrip_tstrip_ttdata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>writeEncodedStrip</B>(tstrip_t strip, tdata_t data, tsize_t cc)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>strip</I></TD><TD><I>Strip number.</I></FONT></TD></TR>
+<TR><TD><I>data</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>cc</I></FONT></TD><TD><I>The count of of data in byte.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> The number of bytes wrote.
+</I><br><br> 
+ Encode the supplied data and write it to the specified strip.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_readEncodedStrip_tstrip_ttdata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>readEncodedStrip</B>(tstrip_t strip, tdata_t buf, tsize_t size)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>strip</I></TD><TD><I>Strip number.</I></FONT></TD></TR>
+<TR><TD><I>data</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>cc</I></FONT></TD><TD><I>The count of data in byte.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> The number of bytes read.
+</I><br><br> 
+ Read a strip of data and decompress the specified amount into the user-supplied
+ buffer.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_writeRawStrip_tstrip_ttdata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>writeRawStrip</B>(tstrip_t strip, tdata_t data, tsize_t cc)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>strip</I></TD><TD><I>Strip number.</I></FONT></TD></TR>
+<TR><TD><I>data</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>cc</I></FONT></TD><TD><I>The count of data in byte.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> The number of bytes wrote.
+</I><br><br> 
+ Write the supplied data to the specified strip.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_readRawStrip_tstrip_ttdata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>readRawStrip</B>(tstrip_t strip, tdata_t buf, tsize_t size)  
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>strip</I></TD><TD><I>Strip number.</I></FONT></TD></TR>
+<TR><TD><I>data</I></TD><TD><I>Data buffer.</I></FONT></TD></TR>
+<TR><TD><I>cc</I></FONT></TD><TD><I>The count of data in byte.</I></FONT></TD></TR>
+</TABLE>
+<br>
+<B>Return: </B><I> The number of bytes read.
+</I><br><br> 
+ Read a strip to the user-supplied buffer.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_computeStrip_uint32tsample_t__const">
+<DT><HR WIDTH=100%><BR>tstrip_t <B>computeStrip</B>(uint32 row, tsample_t sample) const 
+<BR>
+<DD>
+
+<BR><TABLE WIDTH=90% BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR><TD><B>Parameter</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD><I>row</I></TD><TD><I>Row number.</I></FONT></TD></TR>
+<TR><TD><I>sample</I></FONT></TD><TD><I>Sample number.</I></FONT></TD></TR>
+</TABLE>
+<br>
+ 
+ Compute which strip a (row, sample) value is in.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_numOfStrips___">
+<DT><HR WIDTH=100%><BR>tstrip_t <B>numOfStrips</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> The number of strips.
+</I><br><br> 
+ Compute how many strips in an image.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_scanlineSize___">
+<DT><HR WIDTH=100%><BR>tsize_t <B>scanlineSize</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> The size of scanline in byte.
+</I><br><br> 
+ Compute the size of scanline in byte.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_currentStrip___">
+<DT><HR WIDTH=100%><BR>tstrip_t <B>currentStrip</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Strip number.
+</I><br><br> 
+ Retieve the current strip number.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_vStripSize_uint32__">
+<DT><HR WIDTH=100%><BR>tsize_t <B>vStripSize</B>(uint32 nrows)  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Size in bytes
+</I><br><br> 
+ Compute the number of bytes in a variable height, row-aligned strip.
+<br><br>
+
+
+
+
+<A NAME="TiffStripImage_stripSize___">
+<DT><HR WIDTH=100%><BR>tsize_t <B>stripSize</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> Size in bytes
+</I><br><br> 
+ Compute the number of bytes in a (row-aligned) strip.
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</DL>
+
+</body>
+</html>
+

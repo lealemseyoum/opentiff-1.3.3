@@ -1,0 +1,549 @@
+<HTML>
+<HEAD><TITLE>TiffImage</TITLE></HEAD>
+
+<BODY>
+
+<CENTER><B>Copyright (c) 1999-2001 Eastman Kodak Company</B></CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+</CENTER>
+
+<H2 ALIGN=CENTER CLASS="HeadingS">
+TiffImage
+</H2 ALIGN=CENTER>
+<HR WIDTH=100% ALIGN=CENTER>
+<TABLE WIDTH=* BORDER=0>
+<TR><TD>
+<FONT SIZE=+1><B>Library:</B></FONT>&nbsp;&nbsp;	
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Declared in:</B></FONT>&nbsp;&nbsp;	
+
+ TiffImageFile.h 
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>Inherits from:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD>
+<FONT SIZE=+1><B>See:</B></FONT>&nbsp;&nbsp;
+
+</TD></TR>
+<TR><TD><FONT SIZE=+1><B>Documentation Last Modified:</B></FONT>&nbsp;&nbsp;
+Tue Mar 20 13:16:30 2001
+
+</TD></TR>
+</TABLE>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Description</H2>
+
+  The <A HREF="TiffImage.html" >TiffImage</A> class is the base class for <A HREF="TiffStripImage.html" >TiffStripImage</A> and <A HREF="TiffTileImage.html" >TiffTileImage</A>.
+ Its constructor is protected so it can't be instantiated directly by the users.
+
+ <BR> <BR> 
+<HR WIDTH=100% ALIGN=CENTER>
+
+<H2>Interface</H2>
+<DL>
+ 
+<DD> <B>Public Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    virtual 
+    	    <A HREF="#TiffImage__TiffImage___">~TiffImage</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    <A HREF="#TiffImage_init___">init</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    bool 
+    	    <A HREF="#TiffImage_isTiled___">isTiled</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    void 
+    	    <A HREF="#TiffImage_flush___">flush</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    <A HREF="#TiffImage_flushData1___">flushData1</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    <A HREF="#TiffImage_flushData___">flushData</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+
+
+<DD> <B>Protected Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    <A HREF="TiffDirectory.html" >TiffDirectory</A>*	
+    	    <A HREF="#TiffImage_tiffdir">tiffdir</A>
+    	    
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    TiffIO*	
+    	    
+    	    tiffio
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    TiffCodec* 
+    	    
+    	    codec
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    tstrip_t 
+    	    <A HREF="#TiffImage_stripsperimage">stripsperimage</A>
+    	    
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    tstrip_t 
+    	    <A HREF="#TiffImage_nstrips">nstrips</A>
+    	    
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    bool	
+    	    
+    	    bCoderSetup
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    bool	
+    	    
+    	    bPostEncode
+    	    
+    	    
+    	   
+	   
+	    <LI>
+    	    
+    	    <A HREF="#TiffImage_TiffImage_TiffDirectory_TiffIO_bool_">TiffImage</A>
+    	    
+    	    (<A HREF="TiffDirectory.html" >TiffDirectory</A>* tdir, TiffIO* tio, bool tile) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    <A HREF="#TiffImage_setupOffsets___">setupOffsets</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    virtual void 
+    	    <A HREF="#TiffImage_initSize___">initSize</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    virtual tsize_t 
+    	    <A HREF="#TiffImage_getSize___">getSize</A>
+    	    
+    	    () 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    writeCheck
+    	    (int tiles) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    writeBufferSetup
+    	    (tdata_t bp, tsize_t size) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    <A HREF="#TiffImage_appendToStrip_tstrip_ttidata_ttsize_t__">appendToStrip</A>
+    	    
+    	    (tstrip_t strip, tidata_t data, tsize_t cc) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    <A HREF="#TiffImage_growStrips_int__">growStrips</A>
+    	    
+    	    (int delta) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    checkRead
+    	    (int tiles) 
+	    
+    	     
+    	    
+    	   
+	   
+	    <LI>
+    	    int 
+    	    
+    	    readBufferSetup
+    	    (tdata_t bp, tsize_t size) 
+	    
+    	     
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+
+
+<DD> <B>Private Members:</B>
+    <DL>&nbsp;</DL>
+    <UL TYPE="CIRCLE"> <FONT FACE="Courier New" SIZE=2>
+	
+	    <LI>
+    	    bool	
+    	    
+    	    bTiled
+    	    
+    	    
+    	   
+	   
+    </FONT></UL>
+    <DL>&nbsp;</DL>
+
+</DL>
+<HR WIDTH=100% ALIGN=CENTER>
+
+<DL>
+
+
+
+<A NAME="TiffImage__TiffImage___">
+<DT><HR WIDTH=100%><BR>virtual <B>~TiffImage</B>()  
+<BR>
+<DD>
+
+
+ 
+ Destructor
+<br><br>
+
+
+
+
+<A NAME="TiffImage_init___">
+<DT><HR WIDTH=100%><BR>int <B>init</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> non-zero if fail; otherwise zero.
+</I><br><br> 
+ Initialize the <A HREF="TiffImage.html" >TiffImage</A> object. This method is used by the library internally 
+ and not intended to be called by the users.
+<br><br>
+
+
+
+
+<A NAME="TiffImage_isTiled___">
+<DT><HR WIDTH=100%><BR>bool <B>isTiled</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> True if the image is a tiled image; otherwise false
+</I><br><br> 
+ Check if the image is a tiled image.
+<br><br>
+
+
+
+
+<A NAME="TiffImage_flush___">
+<DT><HR WIDTH=100%><BR>void <B>flush</B>()  
+<BR>
+<DD>
+
+
+ 
+ Flush out the image data from internal buffer to the file. The method must be
+ called after finishing writing the image data.
+<br><br>
+
+
+
+
+<A NAME="TiffImage_flushData1___">
+<DT><HR WIDTH=100%><BR>int <B>flushData1</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> non-zero if successful; otherwise zero.
+</I><br><br> 
+ Flush out the image data. This method is used by the library internally
+ and not intended to be called by the users.
+<br><br>
+
+
+
+
+<A NAME="TiffImage_flushData___">
+<DT><HR WIDTH=100%><BR>int <B>flushData</B>()  
+<BR>
+<DD>
+
+
+<B>Return: </B><I> non-zero if successful; otherwise zero.
+</I><br><br> 
+ Flush out the image data. This method is used by the library internally
+ and not intended to be called by the users.
+<br><br>
+
+
+
+
+
+
+
+
+
+
+<A NAME="TiffImage_tiffdir">
+<DT><HR WIDTH=100%><BR><A HREF="TiffDirectory.html" >TiffDirectory</A>*	<B>tiffdir</B>
+<BR>
+<DD>
+
+
+ 
+ todo: 
+ 1. interface to read a block of image data without knowing if
+ the image is tiled. Q: format of the data returned
+ 2. interface to write the whole image (not support for update so
+ can't only write a portion of the image	
+<br><br>
+
+
+
+
+
+
+
+
+<A NAME="TiffImage_stripsperimage">
+<DT><HR WIDTH=100%><BR>tstrip_t <B>stripsperimage</B>
+<BR>
+<DD>
+
+
+ 
+ tilesperimage if <A HREF="TiffImage.html" >TiffImage</A> is tiled
+<br><br>
+
+
+
+
+<A NAME="TiffImage_nstrips">
+<DT><HR WIDTH=100%><BR>tstrip_t <B>nstrips</B>
+<BR>
+<DD>
+
+
+ 
+ size of the strip/tile offset array, can grow
+<br><br>
+
+
+
+
+
+
+
+
+<A NAME="TiffImage_TiffImage_TiffDirectory_TiffIO_bool_">
+<DT><HR WIDTH=100%><BR><B>TiffImage</B>(<A HREF="TiffDirectory.html" >TiffDirectory</A>* tdir, TiffIO* tio, bool tile)  
+<BR>
+<DD>
+
+
+ 
+ Constructor.
+<br><br>
+
+
+
+
+<A NAME="TiffImage_setupOffsets___">
+<DT><HR WIDTH=100%><BR>int <B>setupOffsets</B>()  
+<BR>
+<DD>
+
+
+ 
+ Setup strip/tile offsets
+<br><br>
+
+
+
+
+<A NAME="TiffImage_initSize___">
+<DT><HR WIDTH=100%><BR>virtual void <B>initSize</B>()  
+<BR>
+<DD>
+
+
+ 
+ Init scanlinesize or tilesize
+<br><br>
+
+
+
+
+<A NAME="TiffImage_getSize___">
+<DT><HR WIDTH=100%><BR>virtual tsize_t <B>getSize</B>()  
+<BR>
+<DD>
+
+
+ 
+ Get scanlinesize or tilesize
+<br><br>
+
+
+
+
+
+
+
+
+<A NAME="TiffImage_appendToStrip_tstrip_ttidata_ttsize_t__">
+<DT><HR WIDTH=100%><BR>int <B>appendToStrip</B>(tstrip_t strip, tidata_t data, tsize_t cc)  
+<BR>
+<DD>
+
+
+ 
+ Append to strip/tile
+<br><br>
+
+
+
+
+<A NAME="TiffImage_growStrips_int__">
+<DT><HR WIDTH=100%><BR>int <B>growStrips</B>(int delta)  
+<BR>
+<DD>
+
+
+ 
+ Grow strips/tiles
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</DL>
+
+</body>
+</html>
+

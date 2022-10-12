@@ -1,0 +1,28 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EkTiffi", "EkTiffi.vcproj", "{09CF80C6-6676-41BF-9D30-93C01AA6EC24}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testi", "..\..\..\test\testi.vcproj", "{9E86D373-38FB-40D3-91C1-1AA9A0917553}"
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+		{9E86D373-38FB-40D3-91C1-1AA9A0917553}.0 = {09CF80C6-6676-41BF-9D30-93C01AA6EC24}
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{09CF80C6-6676-41BF-9D30-93C01AA6EC24}.Debug.ActiveCfg = Debug|Win32
+		{09CF80C6-6676-41BF-9D30-93C01AA6EC24}.Debug.Build.0 = Debug|Win32
+		{09CF80C6-6676-41BF-9D30-93C01AA6EC24}.Release.ActiveCfg = Release|Win32
+		{09CF80C6-6676-41BF-9D30-93C01AA6EC24}.Release.Build.0 = Release|Win32
+		{9E86D373-38FB-40D3-91C1-1AA9A0917553}.Debug.ActiveCfg = Debug|Win32
+		{9E86D373-38FB-40D3-91C1-1AA9A0917553}.Debug.Build.0 = Debug|Win32
+		{9E86D373-38FB-40D3-91C1-1AA9A0917553}.Release.ActiveCfg = Release|Win32
+		{9E86D373-38FB-40D3-91C1-1AA9A0917553}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
